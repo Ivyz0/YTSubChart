@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Visualize an array</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <div>
+        <canvas id="myChart"></canvas>
+    </div>
+      <script>
+        names = [];
+        subscriberlist = [];
+        const ctx = document.getElementById('myChart');
+        new Chart(ctx, {
+          type: 'bar',
+          data: {
+            labels: names,
+            datasets: [{
+              label: "Youtuber Subscribers (In Millions)",
+              font: {
+                size:20
+              },
+              data: subscriberlist,
+              borderWidth: 1,
+              borderColor: "red",
+              backgroundColor: "red"
+            }]
+          },
+          options: {
+            scales: {
+              y: {
+                beginAtZero: false
+              }
+            }
+          }
+        });
+        async function getData() {
+            const response = await fetch("youtube_subscribers_data.csv");
+            const data = await response.text();
+            const rows = data.split("\n").slice(1);
+            rows.forEach((elem) => {
+                    const row = elem.split(",");
+                    const name = row[0];
+                    const subscribers = row[2]
+                    names.push(name);
+                    subscriberlist.push(subscribers);
+                    });
+            console.log(names)
+            console.log(subscriberlist)
+        }
+            //end of functions
+            //call the function to test if you see
+
+
+getData();
+      </script>
+
+
+</body>
+</html>
